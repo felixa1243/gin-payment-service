@@ -45,6 +45,12 @@ func Login(c *gin.Context) {
 	user := entities.User{}
 	user.Username = input.Username
 	user.Password = input.Password
-
-	c.JSON(http.StatusOK, gin.H{"status": "login ok"})
+	token, err := entities.LoginCheck(user.Username, user.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "username or password is incorrect",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
