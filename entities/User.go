@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"html"
@@ -61,4 +62,20 @@ func LoginCheck(username string, password string) (string, error) {
 }
 func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+func GetUserByID(uid uint) (User, error) {
+
+	var u User
+
+	if err := config.Database.First(&u, uid).Error; err != nil {
+		return u, errors.New("User not exists")
+	}
+
+	u.PrepareGive()
+
+	return u, nil
+
+}
+func (u *User) PrepareGive() {
+	u.Password = ""
 }

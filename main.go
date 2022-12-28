@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
 	"v1/config"
@@ -12,11 +11,7 @@ import (
 func main() {
 	loadEnv()
 	loadDb()
-	r := gin.Default()
-	public := r.Group("/api")
-	public.POST("/register", controllers.Register)
-	public.POST("/login", controllers.Login)
-
+	r := controllers.Routes()
 	r.Run(":8080")
 }
 func loadDb() {
