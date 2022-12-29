@@ -7,11 +7,16 @@ import (
 
 func Routes() *gin.Engine {
 	r := gin.Default()
-	public := r.Group("/api")
-	public.POST("/register", Register)
-	public.POST("/login", Login)
+	auth := r.Group("/api/auth")
+	auth.POST("/register", Register)
+	auth.POST("/login", Login)
+
 	protected := r.Group("/api/user")
 	protected.Use(middleware.JwtMiddleware())
 	protected.GET("/", CurrentUser)
+
+	customer := r.Group("/api/customer")
+	customer.Use(middleware.JwtMiddleware())
+	customer.POST("/register", Registration)
 	return r
 }

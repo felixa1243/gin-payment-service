@@ -1,26 +1,22 @@
 package main
 
-import (
-	"github.com/joho/godotenv"
-	"log"
-	"v1/config"
-	"v1/controllers"
-	"v1/entities"
-)
+import "v1/container"
 
+// @title Gin Swagger Example API
+// @version 1.0
+// @description This is a sample server server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:3000
+// @BasePath /
+// @schemes http
 func main() {
-	loadEnv()
-	loadDb()
-	r := controllers.Routes()
-	r.Run(":8080")
-}
-func loadDb() {
-	config.Connect()
-	config.Database.AutoMigrate(&entities.User{})
-}
-func loadEnv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	container.Run()
 }

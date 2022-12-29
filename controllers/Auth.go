@@ -8,6 +8,9 @@ import (
 	"v1/utils"
 )
 
+// @Register godoc
+// @Summary register endpoint
+// Register a post method to register a new user
 func Register(c *gin.Context) {
 	var input models.RegistInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -16,6 +19,7 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+
 	if input.Password != input.PasswordVerify {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "password and verify password not match",

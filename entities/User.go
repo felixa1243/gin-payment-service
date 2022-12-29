@@ -12,8 +12,10 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"size:100;not null;unique" json:"username"`
-	Password string `gorm:"type:text;not null" json:"-"`
+	Username   string `gorm:"size:100;not null;unique"`
+	Password   string `gorm:"type:text;not null"`
+	CustomerId string `gorm:"default:null"`
+	MerchantId string `gorm:"default:null"`
 }
 
 func (user *User) BeforeSave(*gorm.DB) error {
@@ -30,6 +32,10 @@ func (user *User) Save() (*User, error) {
 	err = config.Database.Create(&user).Error
 	if err != nil {
 		return &User{}, err
+	}
+
+	if err != nil {
+		panic(err)
 	}
 	return user, nil
 }
@@ -52,7 +58,6 @@ func LoginCheck(username string, password string) (string, error) {
 	}
 
 	token, err := utils.GenerateToken(u.ID)
-
 	if err != nil {
 		return "", err
 	}
